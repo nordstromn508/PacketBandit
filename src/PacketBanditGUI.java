@@ -93,6 +93,7 @@ public class PacketBanditGUI {
 
 		mainWindow.getContentPane().add(spOutput);
 		spOutput.setBounds(10, 16, 740, 290);
+
 		//capture button details
 		captureButton.setBackground(Color.RED);
 		captureButton.setForeground(new Color(255,255,255));
