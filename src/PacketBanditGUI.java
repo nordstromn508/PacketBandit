@@ -90,7 +90,9 @@ public class PacketBanditGUI {
 		spOutput.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		spOutput.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		spOutput.setViewportView(taOutput);
-		
+
+		mainWindow.getContentPane().add(spOutput);
+		spOutput.setBounds(10, 16, 740, 290);
 		//capture button details
 		captureButton.setBackground(Color.RED);
 		captureButton.setForeground(new Color(255,255,255));
@@ -424,7 +426,7 @@ public class PacketBanditGUI {
 	}
 	public void stopAction(ActionEvent x){
 		captureState = false;
-		//bandit.finished();
+		bandit.finished();
 		
 	}
 	public void selectAction(ActionEvent x){
@@ -539,32 +541,33 @@ public class PacketBanditGUI {
 		loadButton.setEnabled(true);
 	}
 		
-// all that is left is to implement saveCaptureData,loadCaptureData,choose network interface, and list network interface
-//not quite sure how to fix these bugs
+
 	public void CapturePackets(){
-		/*
-		bandit = new pkBanditCaptureThread() 
+
+		bandit = new CaptureThread()
 		{
 			
-			public Object construct(){
+			public Object construct()
+			{
+
 				try{
 					cap = JpcapCaptor.openDevice(networkInterfaces[index],65535,false,20);
 						while(captureState){
-							cap.processPacket(1, new pkBanditPacketContents());
+							cap.processPacket(1, new PacketContents());
 						}
 					cap.close();
 				}
 				catch(Exception x){
 					System.out.print(x);
 				}
-				return;
+				return 0;
 			}
 			public void finished(){
 				this.interrupt();
 			}
 		};
-		//bandit.start();				
-		 */
+		bandit.start();
+
 	}
 	
 	public void ListNetworkInterfaces(){
@@ -576,6 +579,11 @@ public class PacketBanditGUI {
 				taOutput.append("\nInfo: " + networkInterfaces[i].name + " (" + networkInterfaces[i].description + ")");
 				taOutput.append("\nDatalink Name: " + networkInterfaces[i].datalink_name + " (" + networkInterfaces[i].datalink_description + ")") ;
 				taOutput.append("\n Mac Address: ");
+
+				byte[] R = networkInterfaces[i].mac_address;
+				for(int j = 0; j <= networkInterfaces.length; j++) {
+					taOutput.append(Integer.toHexString(R[j] & 0xff));
+				}
 				
 				NetworkInterfaceAddress[] networkAddress = networkInterfaces[i].addresses;
 				taOutput.append("\nIP address: " + networkAddress[0].address);
