@@ -29,11 +29,7 @@ public class PacketBanditGUI {
 	private final JButton selectButton = new JButton("Select");
 	private final JButton listButton = new JButton("List");
 	private final JButton filterButton = new JButton("Filter");
-	private final JButton infoButton = new JButton("Info");
-	private final JButton saveButton = new JButton("Save");
-	private final JButton loadButton = new JButton("Load");
-	private final JButton aboutButton = new JButton("About");
-	private final JButton helpButton = new JButton("Help");
+	private final JButton factButton = new JButton("Fact");
 	private final JButton exitButton = new JButton("Exit");
 	
 	//All the different ports(decide which ones are important as group
@@ -42,19 +38,11 @@ public class PacketBanditGUI {
 	private final JRadioButton portSpecial = new JRadioButton("Special Port");
 	private final JRadioButton httpPort = new JRadioButton("HTTP (80)");
 	private final JRadioButton sslPort = new JRadioButton("SSL (443)");
-	private final JRadioButton ftpPort = new JRadioButton("FTP (21)");
-	private final JRadioButton sshPort = new JRadioButton("SSH (22)");
 	private final JRadioButton telnetPort = new JRadioButton("Telnet (23)");
 	private final JRadioButton smtpPort = new JRadioButton("SMTP (25)");
 	private final JRadioButton pop3Port = new JRadioButton("POP3 (110)");
 	private final JRadioButton imapPort = new JRadioButton("IMAP (143)");
 	private final JRadioButton imapsPort = new JRadioButton("IMAPS (993)");
-	private final JRadioButton dnsPort = new JRadioButton("DNS (53)");
-	private final JRadioButton netbiosPort = new JRadioButton("netBIOS (139)");
-	private final JRadioButton sambaPort = new JRadioButton("SAMBA (137)");
-	private final JRadioButton adPort = new JRadioButton("AD (445)");
-	private final JRadioButton sqlPort = new JRadioButton("SQL (118)");
-	private final JRadioButton ldapPort = new JRadioButton("LDAP (389)");
 	
 	private final JLabel title = new JLabel("Packet Bandit ");
 	private final JLabel interfaceLabel = new JLabel("Interface");
@@ -159,45 +147,6 @@ public class PacketBanditGUI {
 		mainWindow.getContentPane().add(filterButton);
 		filterButton.setBounds(360,400,80,20);
 		
-		//info button details
-		infoButton.setBackground(Color.GRAY);
-		infoButton.setForeground(new Color(255,255,255));
-		infoButton.setMargin(new Insets(0,0,0,0));
-		infoButton.addActionListener(new ActionListener()
-			{
-				public void actionPerformed(ActionEvent x){
-					infoAction();
-				}
-				});
-		mainWindow.getContentPane().add(infoButton);
-		infoButton.setBounds(100,400,75,25);
-
-	    //about button details
-		aboutButton.setBackground(Color.GRAY);
-		aboutButton.setForeground(new Color(255,255,255));
-		aboutButton.setMargin(new Insets(0,0,0,0));
-		aboutButton.addActionListener(new ActionListener()
-			{
-				public void actionPerformed(ActionEvent x){
-					aboutAction();
-				}
-				});
-		mainWindow.getContentPane().add(aboutButton);
-		aboutButton.setBounds(180,370,75,25);
-		
-		//help button details
-		helpButton.setBackground(Color.GRAY);
-		helpButton.setForeground(new Color(255,255,255));
-		helpButton.setMargin(new Insets(0,0,0,0));
-		helpButton.addActionListener(new ActionListener()
-			{
-				public void actionPerformed(ActionEvent x){
-					helpAction();
-				}
-				});
-		mainWindow.getContentPane().add(helpButton);
-		helpButton.setBounds(180,370,75,25);
-		
 		//exit button details
 		exitButton.setBackground(Color.GRAY);
 		exitButton.setForeground(new Color(255,255,255));
@@ -210,6 +159,19 @@ public class PacketBanditGUI {
 				});
 		mainWindow.getContentPane().add(exitButton);
 		exitButton.setBounds(180,400,75,25);
+
+		//fact button
+		factButton.setBackground(Color.GRAY);
+		factButton.setForeground(new Color(255,255,255));
+		factButton.setMargin(new Insets(0,0,0,0));
+		factButton.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent x){
+				factAction(x);
+			}
+		});
+		mainWindow.getContentPane().add(factButton);
+		factButton.setBounds(100,400,75,25);
 		
 		//filter enable button
 		filterEnableDisable.add(filterEnable);
@@ -252,26 +214,12 @@ public class PacketBanditGUI {
 		mainWindow.getContentPane().add(sslPort);
 		sslPort.setBounds(460,340,100,23);
 		
-		//port FTP
-		ports.add(ftpPort);
-		ftpPort.setFont(new Font("TimesRoman",0,12));
-		ftpPort.setToolTipText("FTP (21)");
-		mainWindow.getContentPane().add(ftpPort);
-		ftpPort.setBounds(460,360,90,25);
-		
-		//port SSH
-		ports.add(sshPort);
-		sshPort.setFont(new Font("TimesRoman",0,12));
-		sshPort.setToolTipText("SSH (22)");
-		mainWindow.getContentPane().add(sshPort);
-		sshPort.setBounds(460,380,90,25);
-		
 		//port telnet
 		ports.add(telnetPort);
 		telnetPort.setFont(new Font("TimesRoman",0,12));
 		telnetPort.setToolTipText("Telnet (23)");
 		mainWindow.getContentPane().add(telnetPort);
-		telnetPort.setBounds(460,400,90,25);
+		telnetPort.setBounds(660,340,90,25);
 		
 		//port SMTP
 		ports.add(smtpPort);
@@ -292,56 +240,7 @@ public class PacketBanditGUI {
 		imapPort.setFont(new Font("TimesRoman",0,12));
 		imapPort.setToolTipText("IMAP (143)");
 		mainWindow.getContentPane().add(imapPort);
-		imapPort.setBounds(560,360,90,25);
-		
-		//port IMAPS
-		ports.add(imapsPort);
-		imapsPort.setFont(new Font("TimesRoman",0,12));
-		imapsPort.setToolTipText("IMAPS (993)");
-		mainWindow.getContentPane().add(imapsPort);
-		imapsPort.setBounds(560,380,90,25);
-		
-		//port DNS
-		ports.add(dnsPort);
-		dnsPort.setFont(new Font("TimesRoman",0,12));
-		dnsPort.setToolTipText("DNS (53)");
-		mainWindow.getContentPane().add(dnsPort);
-		dnsPort.setBounds(560,400,90,25);
-		
-		//port netBios
-		ports.add(netbiosPort);
-		netbiosPort.setFont(new Font("TimesRoman",0,12));
-		netbiosPort.setToolTipText("NetBios (139)");
-		mainWindow.getContentPane().add(netbiosPort);
-		netbiosPort.setBounds(660,320,90,25);
-		
-		//port Samba
-		ports.add(sambaPort);
-		sambaPort.setFont(new Font("TimesRoman",0,12));
-		sambaPort.setToolTipText("Samba (137)");
-		mainWindow.getContentPane().add(sambaPort);
-		sambaPort.setBounds(660,340,90,25);
-		
-		//port AD
-		ports.add(adPort);
-		adPort.setFont(new Font("TimesRoman",0,12));
-		adPort.setToolTipText("AD (445)");
-		mainWindow.getContentPane().add(adPort);
-		adPort.setBounds(660,360,90,25);
-		
-		//port SQL
-		ports.add(sqlPort);
-		sqlPort.setFont(new Font("TimesRoman",0,12));
-		sqlPort.setToolTipText("SQL (118)");
-		mainWindow.getContentPane().add(sqlPort);
-		sqlPort.setBounds(660,380,90,25);
-		
-		//port LDAP
-		ports.add(ldapPort);
-		ldapPort.setFont(new Font("TimesRoman",0,12));
-		ldapPort.setToolTipText("LDAP (389)");
-		mainWindow.getContentPane().add(ldapPort);
-		ldapPort.setBounds(660,400,90,25);
+		imapPort.setBounds(660,320,90,25);
 		
 		//title
 		title.setFont(new Font("TimesRoman",0,14));
@@ -404,6 +303,9 @@ public class PacketBanditGUI {
 		bandit.finished();
 		
 	}
+	public void factAction(ActionEvent x){
+		JOptionPane.showMessageDialog(null,"Google is better than Bing");
+	}
 	private void selectAction(){
 		ChooseInterface();
 		
@@ -427,12 +329,6 @@ public class PacketBanditGUI {
 				else if(sslPort.isSelected()){
 					cap.setFilter("port 443 ",true);
 				}
-				else if(ftpPort.isSelected()){
-					cap.setFilter("port 21 ",true);
-				}
-				else if(sshPort.isSelected()){
-					cap.setFilter("port 22 ",true);
-				}
 				else if(telnetPort.isSelected()){
 					cap.setFilter("port 23 ",true);
 				}
@@ -448,21 +344,6 @@ public class PacketBanditGUI {
 				else if(imapsPort.isSelected()){
 					cap.setFilter("port 993 ",true);
 				}
-				else if(dnsPort.isSelected()){
-					cap.setFilter("port 53 ",true);
-				}
-				else if(netbiosPort.isSelected()){
-					cap.setFilter("port 139 ",true);
-				}
-				else if(adPort.isSelected()){
-					cap.setFilter("port 445 ",true);
-				}
-				else if(sqlPort.isSelected()){
-					cap.setFilter("port 118 ",true);
-				}
-				else if(ldapPort.isSelected()){
-					cap.setFilter("port 389 ",true);
-				}
 				else{
 					JOptionPane.showMessageDialog(null,"Filtering can not be done at this time");
 				}
@@ -471,18 +352,6 @@ public class PacketBanditGUI {
 		catch(Exception e){
 			e.printStackTrace();
 		}
-	}
-
-	private void infoAction(){
-		//may or may not implement
-	}
-
-	private void aboutAction(){
-		JOptionPane.showMessageDialog(null,"Packet Bandit: made by Vincent, Nick, and Tyler(Tic Tac)");
-	}
-
-	private void helpAction(){
-		//may or may not implement
 	}
 	private void exitAction(){
 		mainWindow.setVisible(false);
@@ -500,15 +369,12 @@ public class PacketBanditGUI {
 		stopButton.setEnabled(false);
 		selectButton.setEnabled(false);
 		filterButton.setEnabled(false);
-		saveButton.setEnabled(false);
 	}
 	private void enableButtons(){
 		captureButton.setEnabled(true);
 		stopButton.setEnabled(true);
 		selectButton.setEnabled(true);
 		filterButton.setEnabled(true);
-		saveButton.setEnabled(true);
-		loadButton.setEnabled(true);
 	}
 		
 

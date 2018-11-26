@@ -17,7 +17,7 @@ public class NetworkInfo {
 	private JLabel title = new JLabel("Network Interface Information");
 	private JLabel totalInterface = new JLabel("Total # of Interfaces On This Host: ");
 	private JLabel totalInterfaceBox = new JLabel("");
-	private JLabel interfaceNumberLabel = new JLabel("Inteface #: ");
+	private JLabel interfaceNumberLabel = new JLabel("Interface #: ");
 	private JLabel interfaceNumberBox = new JLabel("");
 	private JLabel interfaceName = new JLabel("Interface Name: ");
 	private JLabel interfaceNameBox = new JLabel("");
