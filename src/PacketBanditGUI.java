@@ -42,7 +42,6 @@ public class PacketBanditGUI {
 	private final JRadioButton smtpPort = new JRadioButton("SMTP (25)");
 	private final JRadioButton pop3Port = new JRadioButton("POP3 (110)");
 	private final JRadioButton imapPort = new JRadioButton("IMAP (143)");
-	private final JRadioButton imapsPort = new JRadioButton("IMAPS (993)");
 	
 	private final JLabel title = new JLabel("Packet Bandit ");
 	private final JLabel interfaceLabel = new JLabel("Interface");
@@ -306,6 +305,7 @@ public class PacketBanditGUI {
 	public void factAction(ActionEvent x){
 		JOptionPane.showMessageDialog(null,"Google is better than Bing");
 	}
+
 	private void selectAction(){
 		ChooseInterface();
 		
@@ -340,9 +340,6 @@ public class PacketBanditGUI {
 				}
 				else if(imapPort.isSelected()){
 					cap.setFilter("port 143 ",true);
-				}
-				else if(imapsPort.isSelected()){
-					cap.setFilter("port 993 ",true);
 				}
 				else{
 					JOptionPane.showMessageDialog(null,"Filtering can not be done at this time");
@@ -418,8 +415,12 @@ public class PacketBanditGUI {
 				taOutput.append("\n Mac Address: ");
 
 				byte[] R = networkInterfaces[i].mac_address;
+				System.out.println(R.length);
+				for(byte b : R){
+					System.out.println(b);
+				}
 				for(int j = 0; j <= networkInterfaces.length; j++) {
-					taOutput.append(Integer.toHexString(R[j] & 0xff));
+					//taOutput.append(Integer.toHexString(R[j] & 0xff));
 				}
 				
 				NetworkInterfaceAddress[] networkAddress = networkInterfaces[i].addresses;
