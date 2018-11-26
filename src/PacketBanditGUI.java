@@ -10,73 +10,73 @@ import java.io.*;
 
 public class PacketBanditGUI {
 	
-	NetworkInterface[] networkInterfaces;
-	JpcapCaptor cap;
-	CaptureThread bandit;
-	int index = 0;
-	int counter = 0;
-	boolean captureState = false;
+	private NetworkInterface[] networkInterfaces;
+	private JpcapCaptor cap;
+	private CaptureThread bandit;
+	private int index = 0;
+	private int counter = 0;
+	private boolean captureState = false;
 	
 	//GUI components
-	JFrame mainWindow = new JFrame("Packet Bandit  - BY: Vincent,Nick, and Tyler(Tic-Tac)");
-	public static JTextArea taOutput = new JTextArea();
-	JScrollPane spOutput = new JScrollPane();
-	ButtonGroup filterEnableDisable = new ButtonGroup();
-	ButtonGroup ports = new ButtonGroup();
+	private final JFrame mainWindow = new JFrame("Packet Bandit  - BY: Vincent,Nick, and Tyler(Tic-Tac)");
+	public static final JTextArea taOutput = new JTextArea();
+	private final JScrollPane spOutput = new JScrollPane();
+	private final ButtonGroup filterEnableDisable = new ButtonGroup();
+	private final ButtonGroup ports = new ButtonGroup();
 	//JButtons
-	JButton captureButton = new JButton("Capture");
-	JButton stopButton = new JButton("Stop");
-	JButton selectButton = new JButton("Select");
-	JButton listButton = new JButton("List");
-	JButton filterButton = new JButton("Filter");
-	JButton infoButton = new JButton("Info");
-	JButton saveButton = new JButton("Save");
-	JButton loadButton = new JButton("Load");
-	JButton aboutButton = new JButton("About");
-	JButton helpButton = new JButton("Help");
-	JButton exitButton = new JButton("Exit");
+	private final JButton captureButton = new JButton("Capture");
+	private final JButton stopButton = new JButton("Stop");
+	private final JButton selectButton = new JButton("Select");
+	private final JButton listButton = new JButton("List");
+	private final JButton filterButton = new JButton("Filter");
+	private final JButton infoButton = new JButton("Info");
+	private final JButton saveButton = new JButton("Save");
+	private final JButton loadButton = new JButton("Load");
+	private final JButton aboutButton = new JButton("About");
+	private final JButton helpButton = new JButton("Help");
+	private final JButton exitButton = new JButton("Exit");
 	
 	//All the different ports(decide which ones are important as group
-	JRadioButton filterEnable = new JRadioButton("Enable");
-	JRadioButton filterDisable = new JRadioButton("Disable");
-	JRadioButton portSpecial = new JRadioButton("Special Port");
-	JRadioButton httpPort = new JRadioButton("HTTP (80)");
-	JRadioButton sslPort = new JRadioButton("SSL (443)");
-	JRadioButton ftpPort = new JRadioButton("FTP (21)");
-	JRadioButton sshPort = new JRadioButton("SSH (22)");
-	JRadioButton telnetPort = new JRadioButton("Telnet (23)");
-	JRadioButton smtpPort = new JRadioButton("SMTP (25)");
-	JRadioButton pop3Port = new JRadioButton("POP3 (110)");
-	JRadioButton imapPort = new JRadioButton("IMAP (143)");
-	JRadioButton imapsPort = new JRadioButton("IMAPS (993)");
-	JRadioButton dnsPort = new JRadioButton("DNS (53)");
-	JRadioButton netbiosPort = new JRadioButton("netBIOS (139)");
-	JRadioButton sambaPort = new JRadioButton("SAMBA (137)");
-	JRadioButton adPort = new JRadioButton("AD (445)");
-	JRadioButton sqlPort = new JRadioButton("SQL (118)");
-	JRadioButton ldapPort = new JRadioButton("LDAP (389)");
+	private final JRadioButton filterEnable = new JRadioButton("Enable");
+	private final JRadioButton filterDisable = new JRadioButton("Disable");
+	private final JRadioButton portSpecial = new JRadioButton("Special Port");
+	private final JRadioButton httpPort = new JRadioButton("HTTP (80)");
+	private final JRadioButton sslPort = new JRadioButton("SSL (443)");
+	private final JRadioButton ftpPort = new JRadioButton("FTP (21)");
+	private final JRadioButton sshPort = new JRadioButton("SSH (22)");
+	private final JRadioButton telnetPort = new JRadioButton("Telnet (23)");
+	private final JRadioButton smtpPort = new JRadioButton("SMTP (25)");
+	private final JRadioButton pop3Port = new JRadioButton("POP3 (110)");
+	private final JRadioButton imapPort = new JRadioButton("IMAP (143)");
+	private final JRadioButton imapsPort = new JRadioButton("IMAPS (993)");
+	private final JRadioButton dnsPort = new JRadioButton("DNS (53)");
+	private final JRadioButton netbiosPort = new JRadioButton("netBIOS (139)");
+	private final JRadioButton sambaPort = new JRadioButton("SAMBA (137)");
+	private final JRadioButton adPort = new JRadioButton("AD (445)");
+	private final JRadioButton sqlPort = new JRadioButton("SQL (118)");
+	private final JRadioButton ldapPort = new JRadioButton("LDAP (389)");
 	
-	JLabel title = new JLabel("Packet Bandit ");
-	JLabel interfaceLabel = new JLabel("Interface");
-	JLabel filterStatusLabel = new JLabel("Port Filter Status");
-	JLabel filterStatusBox = new JLabel("DISABLED (ALL PORTS)");
-	JLabel filterPresets = new JLabel("Port Filter Presets");
-	JLabel specialPortLabel = new JLabel("Special Port Number");
+	private final JLabel title = new JLabel("Packet Bandit ");
+	private final JLabel interfaceLabel = new JLabel("Interface");
+	private final JLabel filterStatusLabel = new JLabel("Port Filter Status");
+	private final JLabel filterStatusBox = new JLabel("DISABLED (ALL PORTS)");
+	private final JLabel filterPresets = new JLabel("Port Filter Presets");
+	private final JLabel specialPortLabel = new JLabel("Special Port Number");
 	
-	JTextField selectInterface = new JTextField();
-	JTextField specialPortText = new JTextField();
+	private final JTextField selectInterface = new JTextField();
+	private final JTextField specialPortText = new JTextField();
 	
 	
 	public static void main(String args[]){
 		new PacketBanditGUI();
 	}
 	
-	public PacketBanditGUI(){
+	private PacketBanditGUI(){
 		BuildGUI();
 		disableButton();
 	}
 	
-	public void BuildGUI(){
+	private void BuildGUI(){
 		mainWindow.setSize(765,480);
 		mainWindow.setLocation(200,200);
 		mainWindow.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -101,7 +101,7 @@ public class PacketBanditGUI {
 		captureButton.addActionListener(new ActionListener()
 			{
 				public void actionPerformed(ActionEvent x){
-					captureAction(x);
+					captureAction();
 				}
 				});
 		mainWindow.getContentPane().add(captureButton);
@@ -114,7 +114,7 @@ public class PacketBanditGUI {
 		stopButton.addActionListener(new ActionListener()
 			{
 				public void actionPerformed(ActionEvent x){
-					stopAction(x);
+					stopAction();
 				}
 				});
 		mainWindow.getContentPane().add(stopButton);
@@ -127,7 +127,7 @@ public class PacketBanditGUI {
 		selectButton.addActionListener(new ActionListener()
 			{
 				public void actionPerformed(ActionEvent x){
-					selectAction(x);
+					selectAction();
 				}
 				});
 		mainWindow.getContentPane().add(selectButton);
@@ -140,7 +140,7 @@ public class PacketBanditGUI {
 		listButton.addActionListener(new ActionListener()
 			{
 				public void actionPerformed(ActionEvent x){
-					listAction(x);
+					listAction();
 				}
 				});
 		mainWindow.getContentPane().add(listButton);
@@ -153,7 +153,7 @@ public class PacketBanditGUI {
 		filterButton.addActionListener(new ActionListener()
 			{
 				public void actionPerformed(ActionEvent x){
-					filterAction(x);
+					filterAction();
 				}
 				});
 		mainWindow.getContentPane().add(filterButton);
@@ -166,38 +166,12 @@ public class PacketBanditGUI {
 		infoButton.addActionListener(new ActionListener()
 			{
 				public void actionPerformed(ActionEvent x){
-					infoAction(x);
+					infoAction();
 				}
 				});
 		mainWindow.getContentPane().add(infoButton);
 		infoButton.setBounds(100,400,75,25);
-		
-		//save button details
-		saveButton.setBackground(Color.GRAY);
-		saveButton.setForeground(new Color(255,255,255));
-		saveButton.setMargin(new Insets(0,0,0,0));
-		saveButton.addActionListener(new ActionListener()
-			{
-				public void actionPerformed(ActionEvent x){
-					saveAction(x);
-				}
-				});
-		mainWindow.getContentPane().add(saveButton);
-		saveButton.setBounds(100,340,75,25);
-		
-		//load button details
-		loadButton.setBackground(Color.GRAY);
-		loadButton.setForeground(new Color(255,255,255));
-		loadButton.setMargin(new Insets(0,0,0,0));
-		loadButton.addActionListener(new ActionListener()
-			{
-				public void actionPerformed(ActionEvent x){
-					loadAction(x);
-				}
-				});
-		mainWindow.getContentPane().add(loadButton);
-		loadButton.setBounds(180,340,75,25);
-		
+
 	    //about button details
 		aboutButton.setBackground(Color.GRAY);
 		aboutButton.setForeground(new Color(255,255,255));
@@ -205,7 +179,7 @@ public class PacketBanditGUI {
 		aboutButton.addActionListener(new ActionListener()
 			{
 				public void actionPerformed(ActionEvent x){
-					aboutAction(x);
+					aboutAction();
 				}
 				});
 		mainWindow.getContentPane().add(aboutButton);
@@ -218,7 +192,7 @@ public class PacketBanditGUI {
 		helpButton.addActionListener(new ActionListener()
 			{
 				public void actionPerformed(ActionEvent x){
-					helpAction(x);
+					helpAction();
 				}
 				});
 		mainWindow.getContentPane().add(helpButton);
@@ -231,7 +205,7 @@ public class PacketBanditGUI {
 		exitButton.addActionListener(new ActionListener()
 			{
 				public void actionPerformed(ActionEvent x){
-					exitAction(x);
+					exitAction();
 				}
 				});
 		mainWindow.getContentPane().add(exitButton);
@@ -241,7 +215,7 @@ public class PacketBanditGUI {
 		filterEnableDisable.add(filterEnable);
 		filterEnable.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent x){
-				enableFilterAction(x);
+				enableFilterAction();
 			}
 			});
 		mainWindow.getContentPane().add(filterEnable);
@@ -252,7 +226,7 @@ public class PacketBanditGUI {
 		filterDisable.setSelected(true);
 		filterDisable.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent x){
-				disableFilterAction(x);
+				disableFilterAction();
 			}
 			});
 		mainWindow.getContentPane().add(filterDisable);
@@ -420,26 +394,26 @@ public class PacketBanditGUI {
 		mainWindow.setVisible(true);
 	}
 	
-	public void captureAction(ActionEvent x){
+	private void captureAction(){
 		taOutput.setText("");
 		captureState = true;
 		CapturePackets();
 	}
-	public void stopAction(ActionEvent x){
+	private void stopAction(){
 		captureState = false;
 		bandit.finished();
 		
 	}
-	public void selectAction(ActionEvent x){
+	private void selectAction(){
 		ChooseInterface();
 		
 	}
-	public void listAction(ActionEvent x){
+	private void listAction(){
 		ListNetworkInterfaces();
 		selectButton.setEnabled(true);
 		selectInterface.requestFocus();
 	}
-	public void filterAction(ActionEvent x){
+	private void filterAction(){
 		try{
 			if(filterEnable.isSelected()){
 				if(portSpecial.isSelected()){
@@ -495,45 +469,40 @@ public class PacketBanditGUI {
 			}
 		}
 		catch(Exception e){
-			System.out.println(e);
+			e.printStackTrace();
 		}
 	}
-	
-	public void infoAction(ActionEvent x){
+
+	private void infoAction(){
 		//may or may not implement
 	}
-	public void saveAction(ActionEvent x){
-		SaveCaptureData();
-	}
-	public void loadAction(ActionEvent x){
-		LoadCaptureData();
-	}
-	public void aboutAction(ActionEvent x){
+
+	private void aboutAction(){
 		JOptionPane.showMessageDialog(null,"Packet Bandit: made by Vincent, Nick, and Tyler(Tic Tac)");
 	}
-	
-	public void helpAction(ActionEvent x){
+
+	private void helpAction(){
 		//may or may not implement
 	}
-	public void exitAction(ActionEvent x){
+	private void exitAction(){
 		mainWindow.setVisible(false);
 		mainWindow.dispose();
 	}
-	public void enableFilterAction(ActionEvent x){
+	private void enableFilterAction(){
 		filterStatusBox.setText("Enable (selected ports)");
 	}
-	public void disableFilterAction(ActionEvent x){
+	private void disableFilterAction(){
 		filterStatusBox.setText("disable (all ports)");
 	}
 	
-	public void disableButton(){
+	private void disableButton(){
 		captureButton.setEnabled(false);
 		stopButton.setEnabled(false);
 		selectButton.setEnabled(false);
 		filterButton.setEnabled(false);
 		saveButton.setEnabled(false);
 	}
-	public void enableButtons(){
+	private void enableButtons(){
 		captureButton.setEnabled(true);
 		stopButton.setEnabled(true);
 		selectButton.setEnabled(true);
@@ -543,7 +512,7 @@ public class PacketBanditGUI {
 	}
 		
 
-	public void CapturePackets(){
+	private void CapturePackets(){
 
 		bandit = new CaptureThread()
 		{
@@ -559,11 +528,12 @@ public class PacketBanditGUI {
 					cap.close();
 				}
 				catch(Exception x){
-					System.out.print(x);
+					x.printStackTrace();
 				}
 				return 0;
 			}
-			public void finished(){
+			public void finished()
+			{
 				this.interrupt();
 			}
 		};
@@ -571,7 +541,7 @@ public class PacketBanditGUI {
 
 	}
 	
-	public void ListNetworkInterfaces(){
+	private void ListNetworkInterfaces(){
 		networkInterfaces = JpcapCaptor.getDeviceList();
 		taOutput.setText("");
 			for(int i = 0;i < networkInterfaces.length;i++){
@@ -594,7 +564,7 @@ public class PacketBanditGUI {
 				
 			}
 	}
-	public void ChooseInterface(){
+	private void ChooseInterface(){
 		int temp = Integer.parseInt(selectInterface.getText());
 			if(temp > -1 && temp < counter){
 				index = temp;
@@ -604,42 +574,5 @@ public class PacketBanditGUI {
 				JOptionPane.showMessageDialog(null,"Outside of range ");
 			}
 		selectInterface.setText("");
-	}
-	public void SaveCaptureData(){
-		String captureData = taOutput.getText();
-			try{
-				File data = new File("CaptureData.txt");
-				FileOutputStream outStream = new FileOutputStream(data);
-				PrintStream out = new PrintStream(outStream);
-				out.print(captureData);
-				out.close();
-				outStream.close();
-				JOptionPane.showMessageDialog(null,"Save successfull");
-			}
-			catch(Exception e){
-				JOptionPane.showMessageDialog(null,"Save unsuccessfull");
-			}
-	}
-	
-	public void LoadCaptureData(){
-		String captureData = "";
-			try{
-				File data = new File("CaptureData.txt");
-				FileInputStream dataStream = new FileInputStream(data);
-				InputStreamReader input = new InputStreamReader(dataStream);
-				BufferedReader in = new BufferedReader(input);
-					while(in.read() != -1){
-						captureData = captureData + in.readLine();
-					}
-				in.close();
-				input.close();
-				dataStream.close();
-				
-				taOutput.setText(captureData);
-				JOptionPane.showMessageDialog(null,"Load successfull");
-			}
-			catch(Exception e){
-				JOptionPane.showMessageDialog(null,"Load not successfull");
-			}
 	}
 }
