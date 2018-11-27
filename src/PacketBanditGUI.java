@@ -59,7 +59,7 @@ public class PacketBanditGUI {
 		mainWindow.setLocation(200,200);
 		mainWindow.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		mainWindow.getContentPane().setLayout(null);
-		//mainWindow.setResizable(false);
+		mainWindow.setResizable(false);
 
 		// title
 		title.setFont(roman14);
