@@ -40,7 +40,7 @@ public class PacketBanditGUI {
 	private final JRadioButton pop3Port = new JRadioButton("POP3 (110)");
 	private final JRadioButton imapPort = new JRadioButton("IMAP (143)");
 
-	private final JLabel categories = new JLabel("Identity     Source     Destination     Protocol     Length     Info");
+	private final JLabel categories = new JLabel("Identity         Source           Destination      Protocol         Length           Info             |");
 	private final JLabel title = new JLabel("Packet Bandit \"Banditiering Packets Since 2018\"");
 	private final JLabel interfaceLabel = new JLabel("Interface");
 	private final JLabel filterPresets = new JLabel("Port Filter Presets");
@@ -54,12 +54,13 @@ public class PacketBanditGUI {
 	private void BuildGUI(){
 		Font roman12 = new Font("TimesRoman",0,12);
 		Font roman14 = new Font("TimesRoman",0,14);
+		int spacing = 100;
 
-		mainWindow.setSize(765,500);
+		mainWindow.setSize(765,485);
 		mainWindow.setLocation(200,200);
 		mainWindow.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		mainWindow.getContentPane().setLayout(null);
-		mainWindow.setResizable(false);
+		//mainWindow.setResizable(false);
 
 		// title
 		title.setFont(roman14);
@@ -74,14 +75,15 @@ public class PacketBanditGUI {
 		categories.setFont(roman14);
 		categories.setHorizontalAlignment(SwingConstants.LEFT);
 		mainWindow.getContentPane().add(categories);
-		categories.setBounds(10, title.getHeight()+1+title.getY(), 440, 15);
+		categories.setBounds(15, title.getHeight()+title.getY()+1, 740, 15);
 
+		//scroll pane
 		spOutput.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		spOutput.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		spOutput.setViewportView(taOutput);
-
 		mainWindow.getContentPane().add(spOutput);
 		spOutput.setBounds(10, categories.getY()+categories.getHeight()+1, 740, 290);
+		spOutput.setAutoscrolls(true);
 
 		//capture button details
 		captureButton.setBackground(Color.RED);
@@ -103,49 +105,49 @@ public class PacketBanditGUI {
 		filterPresets.setForeground(Color.GREEN);
 		filterPresets.setHorizontalAlignment(SwingConstants.CENTER);
 		mainWindow.getContentPane().add(filterPresets);
-		filterPresets.setBounds(550,stopButton.getY(),110,10);
-
-		//port HTTP button
-		ports.add(httpPort);
-		httpPort.setFont(roman12);
-		httpPort.setToolTipText("HTTP (80)");
-		mainWindow.getContentPane().add(httpPort);
-		httpPort.setBounds(460,filterPresets.getY()+filterPresets.getHeight()+1,90,23);
+		filterPresets.setBounds((mainWindow.getWidth()+stopButton.getX())/2,stopButton.getY(),110,25);
 
 		//port SMTP
 		ports.add(smtpPort);
 		smtpPort.setFont(roman12);
 		smtpPort.setToolTipText("SMTP (25)");
 		mainWindow.getContentPane().add(smtpPort);
-		smtpPort.setBounds(560,httpPort.getY(),90,25);
+		smtpPort.setBounds(filterPresets.getX(),filterPresets.getY()+filterPresets.getHeight()+1,90,25);
+
+		//port HTTP button
+		ports.add(httpPort);
+		httpPort.setFont(roman12);
+		httpPort.setToolTipText("HTTP (80)");
+		mainWindow.getContentPane().add(httpPort);
+		httpPort.setBounds(smtpPort.getX()-spacing,smtpPort.getY(),90,23);
 
 		//port IMAP
 		ports.add(imapPort);
 		imapPort.setFont(roman12);
 		imapPort.setToolTipText("IMAP (143)");
 		mainWindow.getContentPane().add(imapPort);
-		imapPort.setBounds(660,httpPort.getY(),90,25);
+		imapPort.setBounds(smtpPort.getX()+spacing,httpPort.getY(),90,25);
 
 		//port SSL button
 		ports.add(sslPort);
 		sslPort.setFont(roman12);
 		sslPort.setToolTipText("SSL (443)");
 		mainWindow.getContentPane().add(sslPort);
-		sslPort.setBounds(460,httpPort.getY()+httpPort.getHeight()+1,100,23);
+		sslPort.setBounds(httpPort.getX(),httpPort.getY()+httpPort.getHeight()+1,100,23);
 
 		//port POP3
 		ports.add(pop3Port);
 		pop3Port.setFont(roman12);
 		pop3Port.setToolTipText("POP3 (110)");
 		mainWindow.getContentPane().add(pop3Port);
-		pop3Port.setBounds(560,sslPort.getY(),90,25);
+		pop3Port.setBounds(smtpPort.getX(),sslPort.getY(),90,25);
 
 		//port telnet
 		ports.add(telnetPort);
 		telnetPort.setFont(roman12);
 		telnetPort.setToolTipText("Telnet (23)");
 		mainWindow.getContentPane().add(telnetPort);
-		telnetPort.setBounds(660,sslPort.getY(),90,25);
+		telnetPort.setBounds(imapPort.getX(),sslPort.getY(),90,25);
 
 		//interface
 		interfaceLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -190,16 +192,11 @@ public class PacketBanditGUI {
 		mainWindow.getContentPane().add(factButton);
 		factButton.setBounds(100,listButton.getY(),75,25);
 
-
-		
-
-
-
-
 		mainWindow.setVisible(true);
 	}
 	
 	private void captureAction(){
+		taOutput.setText("");
 		filterAction();
 		captureState = true;
 		CapturePackets();
@@ -264,13 +261,10 @@ public class PacketBanditGUI {
 		
 
 	private void CapturePackets(){
-
 		bandit = new CaptureThread()
 		{
-			
 			public Object construct()
 			{
-
 				try{
 					cap = JpcapCaptor.openDevice(networkInterfaces[index],65535,false,20);
 						while(captureState){
@@ -311,7 +305,6 @@ public class PacketBanditGUI {
 				taOutput.append("\nSubnet Mask: " + networkAddress[0].subnet);
 				taOutput.append("\nBroadcast Address: " + networkAddress[0].broadcast);
 				counter++;
-				
 			}
 	}
 	private void ChooseInterface(){
@@ -323,6 +316,5 @@ public class PacketBanditGUI {
 			else{
 				JOptionPane.showMessageDialog(null,"Outside of range ");
 			}
-		selectInterface.setText("");
 	}
 }
