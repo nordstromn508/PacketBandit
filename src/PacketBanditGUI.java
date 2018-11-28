@@ -5,7 +5,6 @@ import java.awt.event.*;
 import jpcap.JpcapCaptor;
 import jpcap.NetworkInterface;
 import jpcap.NetworkInterfaceAddress;
-
 import java.io.*;
 
 public class PacketBanditGUI {
@@ -39,11 +38,18 @@ public class PacketBanditGUI {
 	private final JRadioButton smtpPort = new JRadioButton("SMTP (25)");
 	private final JRadioButton pop3Port = new JRadioButton("POP3 (110)");
 	private final JRadioButton imapPort = new JRadioButton("IMAP (143)");
+	private final int buffer = -3;
+	private final JLabel categories = new JLabel(PacketContents.dynamicSpace(PacketContents.IDSpace+buffer, "ID") +
+			PacketContents.dynamicSpace(PacketContents.IPSpace+(3*buffer), "Src IP:Port") +
+			PacketContents.dynamicSpace(PacketContents.IPSpace+(2*buffer), "Dest IP:Port") +
+			PacketContents.dynamicSpace(PacketContents.TLPSpace+(buffer+2), "TLP") +
+			PacketContents.dynamicSpace(PacketContents.LengthSpace+(buffer+2), "Len") +
+			PacketContents.dynamicSpace(PacketContents.ALPSpace+(buffer+2), "ALP") +
+			PacketContents.dynamicSpace(PacketContents.AckSpace+(buffer), "Ack/Hop"));
 
-	private final JLabel categories = new JLabel("Identity         Source           Destination      Protocol         Length           Info             |");
 	private final JLabel title = new JLabel("Packet Bandit \"Banditiering Packets Since 2018\"");
 	private final JLabel interfaceLabel = new JLabel("Interface");
-	private final JLabel filterPresets = new JLabel("Port Filter Presets");
+	private final JLabel filterPresets = new JLabel("Port Filters");
 	private final JTextField selectInterface = new JTextField();
 	
 	public PacketBanditGUI(){
@@ -60,7 +66,7 @@ public class PacketBanditGUI {
 		mainWindow.setLocation(200,200);
 		mainWindow.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		mainWindow.getContentPane().setLayout(null);
-		//mainWindow.setResizable(false);
+		mainWindow.setResizable(false);
 
 		// title
 		title.setFont(roman14);
@@ -75,15 +81,14 @@ public class PacketBanditGUI {
 		categories.setFont(roman14);
 		categories.setHorizontalAlignment(SwingConstants.LEFT);
 		mainWindow.getContentPane().add(categories);
-		categories.setBounds(15, title.getHeight()+title.getY()+1, 740, 15);
+		categories.setBounds(14, title.getHeight()+title.getY()+1, 740, 15);
 
 		//scroll pane
 		spOutput.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		spOutput.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		spOutput.setViewportView(taOutput);
 		mainWindow.getContentPane().add(spOutput);
-		spOutput.setBounds(10, categories.getY()+categories.getHeight()+1, 740, 290);
-		spOutput.setAutoscrolls(true);
+		spOutput.setBounds(10, categories.getY()+categories.getHeight()+1, categories.getWidth(), 290);
 
 		//capture button details
 		captureButton.setBackground(Color.RED);
@@ -261,14 +266,23 @@ public class PacketBanditGUI {
 		
 
 	private void CapturePackets(){
+
 		bandit = new CaptureThread()
 		{
 			public Object construct()
 			{
 				try{
 					cap = JpcapCaptor.openDevice(networkInterfaces[index],65535,false,20);
+					boolean atBottom = true;
 						while(captureState){
+							double diff = spOutput.getVerticalScrollBar().getMaximum()-(spOutput.getVerticalScrollBar().getValue()+287);
+							if(diff <= 50)
+								atBottom = true;
+							else
+								atBottom = false;
 							cap.processPacket(1, new PacketContents());
+							if(atBottom)
+								spOutput.getVerticalScrollBar().setValue(spOutput.getVerticalScrollBar().getMaximum());
 						}
 					cap.close();
 				}
@@ -307,6 +321,7 @@ public class PacketBanditGUI {
 				counter++;
 			}
 	}
+
 	private void ChooseInterface(){
 		int temp = Integer.parseInt(selectInterface.getText());
 			if(temp > -1 && temp < counter){
