@@ -209,7 +209,6 @@ public class PacketBanditGUI {
 	private void stopAction(){
 		captureState = false;
 		bandit.finished();
-		
 	}
 	public void factAction(){
 		JOptionPane.showMessageDialog(null,"Google is better than Bing :P");
@@ -249,6 +248,8 @@ public class PacketBanditGUI {
 		}
 	}
 	private void exitAction(){
+		if(captureState)
+			stopAction();
 		mainWindow.setVisible(false);
 		mainWindow.dispose();
 	}

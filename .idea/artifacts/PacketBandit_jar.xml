@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="PacketBandit:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/PacketBandit_jar</output-path>
+    <root id="archive" name="PacketBandit.jar">
+      <element id="module-output" name="PacketBandit" />
+      <element id="library" level="module" name="Jpcap" module-name="PacketBandit" />
+    </root>
+  </artifact>
+</component>
