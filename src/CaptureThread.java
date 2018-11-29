@@ -10,28 +10,44 @@ public abstract class CaptureThread {
     private static class ThreadVar {
 
         private Thread thread;
-        ThreadVar(Thread t) {thread = t; }
-        synchronized Thread get() {return thread;}
-        synchronized void clear() {thread = null;}
+
+        ThreadVar(Thread t) {
+            thread = t;
+        }
+
+        synchronized Thread get() {
+            return thread;
+        }
+
+        synchronized void clear() {
+            thread = null;
+        }
 
     }
 
     private ThreadVar threadVar;
 
     //accessor methods
-    protected synchronized Object getValue() {return value; }
-    private synchronized void setValue(Object x) {value = x; }
+    protected synchronized Object getValue() {
+        return value;
+    }
+
+    private synchronized void setValue(Object x) {
+        value = x;
+    }
 
     //compute value to be returned. Abstract so MUST be implemented.
     public abstract Object construct();
 
     //called on even dispatching thread (not on the worker thread)
-    public void finished() {}
+    public void finished() {
+    }
+
     public void interrupt() {
 
         Thread t = threadVar.get();
 
-        if(t != null) {
+        if (t != null) {
             t.interrupt();
         }
 
@@ -44,7 +60,7 @@ public abstract class CaptureThread {
         while (true) {
             Thread t = threadVar.get();
 
-            if(t == null) {
+            if (t == null) {
                 return getValue();
             }
 
@@ -61,15 +77,16 @@ public abstract class CaptureThread {
     public CaptureThread() {
 
         final Runnable doFinished = new Runnable() {
-            public void run() { finished(); }
+            public void run() {
+                finished();
+            }
         };
 
         Runnable doConstruct = new Runnable() {
             public void run() {
-                try{
+                try {
                     setValue(construct());
-                }
-                finally {
+                } finally {
                     threadVar.clear();
                 }
 
@@ -84,7 +101,7 @@ public abstract class CaptureThread {
     public void start() {
         Thread t = threadVar.get();
 
-        if(t != null) {
+        if (t != null) {
             t.start();
         }
     }
