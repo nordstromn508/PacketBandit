@@ -21,10 +21,10 @@ Packet Bandit is an application that is going to record the clients packet infor
 * Will try to include capture of multiple type requests (SMTP, HTTP, UDP).
 
 ### Plan
-- Stage 1: Research the topic of how the pineapple, which is a hacking device, goes about blocking forced https encryption and reading the data.
+- Stage 1: Research types of packet capture, how it is used and why companies need to record packets.
 - Stage 2: Learn more about the coding implementations of socket API in Java.
 - Stage 3: Set up the router on one of our laptops.
-- Stage 4: Write the code to be able to capture packets from a network. The application would be similar to Wiresharks packet recording. Then we will spend the remaining time Debugging.
+- Stage 4: Write the code to be able to capture packets from a network. The application will attempt packet capture and recording. Then we will spend the remaining time Debugging.
 - Stage 5: Creating and preparing the presentation.
 
 
