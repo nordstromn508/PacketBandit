@@ -38,9 +38,8 @@ Packet Bandit is an application that is going to record the clients packet infor
 # Getting Started
 
 ## Install
-- Install Jcap library and add to your favored IDE
-- Install PacketBandit.java
-- Run
+- Download PacketBandit.zip folder
+- Unarchive and run Launch.bat
 
 ## Features
 - Packet Recording
