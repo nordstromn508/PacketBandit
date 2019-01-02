@@ -39,7 +39,7 @@ Packet Bandit is an application that is going to record the clients packet infor
 
 ## Install
 - Download PacketBandit.zip folder
-- Unarchive and run Launch.bat
+- Extract All and run PacketBandit.exe
 
 ## Features
 - Packet Recording
